@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tw-daytrade-picker"
+version = "0.1.0"
+description = "Post-market data pipeline for Taiwan stocks"
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = [
+  "requests==2.32.3",
+  "pandas==2.2.3",
+  "PyYAML==6.0.2",
+  "openpyxl==3.1.5",
+  "matplotlib==3.9.2",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

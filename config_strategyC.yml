@@ -1,0 +1,55 @@
+universe:
+  min_turnover: 20000000
+  min_price: 20
+  max_price: 150
+
+sector:
+  thresh_avg_pct: 2.0
+  thresh_up_ratio: 0.6
+  thresh_mtm_z: 0.0
+  mtm_lookback: 5
+  weights:
+    avg_pct_change_z: 0.45
+    sector_mtm_z: 0.45
+    up_ratio: 0.10
+
+leader:
+  top_n_per_sector: 2
+  top_pct_in_sector: 0.15
+  thresh_leader_pct: 6.0
+  thresh_leader_vol_ratio: 2.0
+  thresh_leader_pos: 0.7
+  weights:
+    pct_change_z: 0.55
+    vol_ratio_z: 0.30
+    pos_in_day: 0.15
+
+follower:
+  pct_change_min: 1.0
+  pct_change_max: 5.0
+  vol_ratio_min: 1.2
+  vol_ratio_max: 2.5
+  thresh_dist_20d_high: 0.05
+  weights:
+    pct_change_z: 0.35
+    vol_ratio_z: 0.20
+    one_minus_dist_20d_high: 0.30
+    pos_in_day: 0.15
+
+total_score_weights:
+  score_sector: 0.35
+  score_leader: 0.25
+  score_follow: 0.40
+
+position_sizing:
+  capital: 100000
+  risk_per_trade: 0.01
+  stop_buffer_pct: 0.01
+  max_position_pct: 0.30
+
+demo:
+  num_stocks: 220
+  num_sectors: 12
+  history_days: 40
+  seed: 7
+  fallback_if_empty: true

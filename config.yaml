@@ -1,0 +1,19 @@
+storage:
+  out_dir: "DayTradePicker_Results"
+  use_sqlite: true
+  sqlite_path: "data/daytrade_picker.sqlite"
+
+risk:
+  min_turnover: 20000000
+  min_price: 20
+  max_price: 150
+  exclude_disposition: true
+  exclude_full_cash_delivery: true
+
+strategy_A:
+  min_vol_ratio: 2.0
+  lookback_ma: 20
+  min_pct_change: 5
+  max_pct_change: 9
+  close_position_min: 0.7
+  require_institution_net_buy: true
