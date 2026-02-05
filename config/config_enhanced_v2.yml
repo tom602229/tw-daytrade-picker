@@ -1,0 +1,118 @@
+# ========================================
+# TW DayTrade Picker - Enhanced Config v2.0
+# 生產環境配置檔案
+# ========================================
+
+# ========================================
+# 系統設定
+# ========================================
+system:
+  version: "2.0.0"
+  environment: "production"  # development | testing | production
+  log_level: "INFO"          # DEBUG | INFO | WARNING | ERROR
+  enable_performance_monitoring: true
+
+# ========================================
+# 資金管理
+# ========================================
+capital:
+  initial_capital: 1000000      # 初始資金（元）
+  max_position_value_pct: 20.0  # 單筆最大投資比例（%）
+  max_total_exposure_pct: 80.0  # 總曝險上限（%）
+
+# ========================================
+# 風險控制
+# ========================================
+risk_management:
+  # 單日風險限制
+  max_daily_loss_pct: 2.0         # 單日最大虧損（%）
+  max_daily_trades: 10            # 單日最大交易次數
+
+  # 回撤控制
+  max_drawdown_pct: 10.0          # 最大回撤（%）
+  drawdown_warning_pct: 5.0       # 回撤警告線（%）
+
+  # 連續虧損保護
+  consecutive_loss_limit: 3       # 連續虧損次數上限
+  consecutive_loss_action: "reduce_position"  # reduce_position | suspend
+
+  # 停損設定
+  stop_loss:
+    type: "dynamic_atr"           # fixed | dynamic_atr | trailing
+    fixed_pct: 2.0                # 固定停損（%）
+    atr_multiplier: 2.0           # ATR 倍數
+    atr_period: 14                # ATR 計算週期
+    min_stop_pct: 1.0             # 最小停損（%）
+    max_stop_pct: 5.0             # 最大停損（%）
+
+# ========================================
+# 交易成本
+# ========================================
+trading_costs:
+  commission_rate: 0.1425         # 手續費率（%）
+  commission_discount: 0.6        # 手續費折扣
+  min_commission: 20              # 最低手續費（元）
+  tax_rate: 0.3                   # 一般證交稅（%）
+  daytrade_tax_rate: 0.15         # 當沖證交稅（%）
+  enable_slippage: true           # 啟用滑價計算
+  slippage_bps: 2.0               # 滑價（基點）
+
+# ========================================
+# 資金曲線保護
+# ========================================
+equity_protection:
+  enabled: true                   # 啟用資金保護
+  auto_suspend: true              # 自動暫停交易
+  recovery_period_days: 5         # 暫停後恢復期（天）
+  position_multipliers:
+    active: 1.0
+    reduced: 0.5
+    recovery: 0.7
+    suspended: 0.0
+
+# ========================================
+# 資料驗證
+# ========================================
+data_validation:
+  strict_validation: false        # 嚴格模式
+  auto_clean: true                # 自動清理異常資料
+  clean_method: "drop"            # drop | fill | interpolate
+  nan_strategy: "forward_fill"    # replace | forward_fill | drop
+  outlier_detection: true
+  outlier_method: "iqr"           # iqr | zscore | mad
+
+# ========================================
+# 錯誤處理
+# ========================================
+error_handling:
+  on_data_error: "skip"           # skip | stop | retry
+  on_calculation_error: "default" # default | skip | stop
+  on_signal_error: "hold"         # hold | exit | skip
+  max_retries: 3
+  log_errors: true
+
+# ========================================
+# 日誌系統
+# ========================================
+logging:
+  level: "INFO"
+  enable_file_logging: true
+  log_directory: "logs/"
+  trade_log_enabled: true
+  performance_log_enabled: true
+  error_log_enabled: true
+
+# ========================================
+# 測試模式
+# ========================================
+testing:
+  paper_trading: true             # 紙上交易模式
+  use_mock_data: false
+  test_duration_days: 30
+  test_capital: 1000000
+
+metadata:
+  config_version: "2.0.0"
+  last_updated: "2026-02-05"
+  author: "TW DayTrade Picker Team"
+  description: "Production-ready configuration with full risk management"
