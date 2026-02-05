@@ -1,0 +1,244 @@
+# 增強版策略配置檔案
+# Enhanced Strategy Configuration
+
+# ========================================
+# 基本設定
+# ========================================
+strategy:
+  name: "Enhanced Strategy C"
+  version: "2.0"
+  description: "整合技術面、籌碼面、多時間框架的完整當沖策略"
+
+# ========================================
+# 資金與風控設定
+# ========================================
+capital:
+  initial_capital: 1000000  # 初始資金（台幣）
+  
+risk_management:
+  # 部位管理
+  max_position_size_pct: 10.0      # 單筆最大部位 (%)
+  max_risk_per_trade_pct: 2.0      # 單筆最大風險 (%)
+  max_open_positions: 3            # 最大同時持倉數
+  
+  # 停損停利
+  default_stop_loss_pct: 3.0       # 預設停損 (%)
+  default_take_profit_pct: 6.0     # 預設停利 (%)
+  trailing_stop_pct: 2.0           # 移動停利 (%)
+  
+  # 整體風控
+  max_daily_loss_pct: 5.0          # 單日最大虧損 (%)
+  max_drawdown_pct: 15.0           # 最大回撤 (%)
+  
+  # 連續虧損控制
+  max_consecutive_losses: 3        # 最大連續虧損次數
+  cooldown_period_minutes: 60      # 冷靜期（分鐘）
+
+# ========================================
+# 交易成本
+# ========================================
+costs:
+  commission_rate: 0.001425        # 手續費率 0.1425%
+  tax_rate: 0.003                  # 證交稅 0.3% (賣出時)
+  slippage: 0.001                  # 滑價 0.1%
+
+# ========================================
+# 市場環境過濾
+# ========================================
+market_environment:
+  enabled: true                    # 是否啟用市場環境過濾
+  
+  # 大盤過濾條件
+  index_filter:
+    require_above_ma20: true       # 要求大盤站上月線才做多
+    require_above_ma60: false      # 要求大盤站上季線才做多
+    
+  # VIX 恐慌指標
+  vix_filter:
+    enabled: true
+    max_vix_for_long: 30           # VIX 超過此值不做多
+    min_vix_for_contrarian: 35     # VIX 超過此值考慮逆勢操作
+  
+  # 外資過濾
+  foreign_investment_filter:
+    enabled: true
+    min_net_buy_for_long: 0        # 外資買超門檻（億），0 表示不限制
+    warning_on_strong_sell: true   # 外資強力賣超時警告
+
+# ========================================
+# 技術指標設定
+# ========================================
+technical_indicators:
+  # RSI 設定
+  rsi:
+    period: 14
+    oversold: 30                   # 超賣線
+    overbought: 70                 # 超買線
+  
+  # Williams %R 設定
+  williams:
+    period: 14
+    oversold: -80
+    overbought: -20
+  
+  # 布林通道設定
+  bollinger_bands:
+    period: 20
+    std_dev: 2
+  
+  # 成交量設定
+  volume:
+    ma_period: 20
+    min_volume_ratio: 1.5          # 成交量需大於均量的倍數
+
+# ========================================
+# 籌碼面設定
+# ========================================
+chip_analysis:
+  # OBV 能量潮
+  obv:
+    enabled: true
+    ma_period: 20
+    
+  # 三大法人
+  institutional:
+    enabled: true
+    threshold_lots: 1000           # 買賣超門檻（張）
+    
+    # 權重設定
+    weights:
+      foreign: 0.5                 # 外資權重
+      investment_trust: 0.3        # 投信權重
+      dealer: 0.2                  # 自營權重
+
+# ========================================
+# 多時間框架設定
+# ========================================
+multi_timeframe:
+  enabled: true
+  
+  # 時間框架定義
+  timeframes:
+    long_term: "daily"             # 長週期：看趨勢
+    medium_term: "60min"           # 中週期：確認方向
+    short_term: "15min"            # 短週期：找進場點
+  
+  # 一致性要求
+  min_alignment_pct: 70            # 至少 70% 時間框架一致才進場
+
+# ========================================
+# 選股過濾器
+# ========================================
+stock_filters:
+  # 基本面過濾
+  fundamental:
+    min_market_cap: 50             # 最小市值（億）
+    max_market_cap: 10000          # 最大市值（億）
+    
+  # 價格過濾
+  price:
+    min_price: 10                  # 最低價格
+    max_price: 1000                # 最高價格
+    
+  # 成交量過濾
+  volume:
+    min_avg_volume: 1000           # 最小平均成交量（張/日）
+    
+  # 產業過濾（黑名單）
+  industry_blacklist:
+    - "金融保險"                   # 避開金融股（波動小）
+    - "航運"                       # 避開航運股（受國際影響大）
+
+# ========================================
+# 評分系統
+# ========================================
+scoring:
+  # 技術面權重 (總共 40 分)
+  technical_weight: 40
+  
+  # 籌碼面權重 (總共 40 分)
+  chip_weight: 40
+  
+  # 市場環境權重 (總共 20 分)
+  market_weight: 20
+  
+  # 進場門檻
+  min_score_for_entry: 70          # 最低進場分數
+  min_score_for_strong_entry: 85   # 強力進場分數
+
+# ========================================
+# 回測設定
+# ========================================
+backtest:
+  # 回測期間
+  start_date: "2023-01-01"
+  end_date: "2024-12-31"
+  
+  # 績效目標
+  target_win_rate: 60              # 目標勝率 (%)
+  target_profit_factor: 2.0        # 目標獲利因子
+  target_sharpe_ratio: 1.5         # 目標 Sharpe Ratio
+  
+  # 回測模式
+  mode: "realistic"                # realistic: 考慮滑價和成本, ideal: 理想狀態
+
+# ========================================
+# 交易日誌設定
+# ========================================
+logging:
+  # 日誌等級
+  level: "INFO"                    # DEBUG, INFO, WARNING, ERROR
+  
+  # 儲存設定
+  save_trades: true                # 是否儲存交易記錄
+  save_path: "./logs/trades"       # 交易記錄儲存路徑
+  
+  # 每日報表
+  daily_report: true               # 是否產生每日報表
+  report_path: "./logs/reports"    # 報表儲存路徑
+
+# ========================================
+# 進階設定
+# ========================================
+advanced:
+  # 自動調整參數
+  auto_tune: false                 # 是否自動調整參數（謹慎使用）
+  
+  # 機器學習
+  use_ml: false                    # 是否使用機器學習輔助（未來功能）
+  
+  # 即時監控
+  realtime_monitoring: true        # 是否啟用即時監控
+  alert_on_signal: true            # 訊號出現時發送通知
+  
+  # 資料更新頻率
+  data_update_interval: 60         # 資料更新間隔（秒）
+
+# ========================================
+# 通知設定
+# ========================================
+notifications:
+  enabled: true
+  
+  # 通知條件
+  on_entry_signal: true            # 進場訊號時通知
+  on_exit_signal: true             # 出場訊號時通知
+  on_stop_loss: true               # 觸發停損時通知
+  on_take_profit: true             # 觸發停利時通知
+  on_daily_loss_limit: true        # 觸及單日虧損上限時通知
+  
+  # 通知方式（可多選）
+  methods:
+    email: false                   # Email 通知
+    line: false                    # LINE 通知
+    telegram: false                # Telegram 通知
+    console: true                  # 終端機顯示
+
+# ========================================
+# 除錯模式
+# ========================================
+debug:
+  enabled: false                   # 除錯模式
+  print_signals: true              # 印出所有訊號
+  print_scores: true               # 印出評分細節
+  save_charts: false               # 儲存圖表
