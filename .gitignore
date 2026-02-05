@@ -1,34 +1,20 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyd
-*.pyo
-*.egg-info/
-.dist/
-.build/
-.venv/
-venv/
+*$py.class
 
 # IDE
 .vscode/
 .idea/
 
-# OS
-.DS_Store
-Thumbs.db
+# Logs
+logs/*.log
+!logs/.gitkeep
 
-# Outputs / local data (do not commit)
-DayTradePicker_Results/market_*.csv
-DayTradePicker_Results/market_*.xlsx
-DayTradePicker_Results/*.sqlite
-DayTradePicker_Results/*.db
+# Data (歷史資料太大，只保留最近)
+data/daily/*.parquet
+!data/daily/.gitkeep
 
-data/*.sqlite
-data/*.db
-
-# Keep reports for GitHub showcase
-# (reports/ is intentionally NOT ignored)
-
-# Local secrets
-.env
-.env.*
+# Results
+results/*.json
+!results/.gitkeep
