@@ -167,4 +167,4 @@ tw-daytrade-picker/
 
 ---
 
-**Made with ❤️ by Nebula AI**
+
