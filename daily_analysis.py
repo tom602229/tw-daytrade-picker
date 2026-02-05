@@ -294,11 +294,29 @@ def analyze_data():
     
     df_result = pd.DataFrame(results)
     
-    # 儲存結果
+    # 儲存結果到分析目錄
     output_dir = Path("code/tw-daytrade-picker/analysis")
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / f"daytrade_targets_{latest_date}.csv"
     df_result.to_csv(output_file, index=False, encoding='utf-8-sig')
+    
+    # 同時儲存到本地指定路徑（使用日期格式如：2026-2-5.csv）
+    try:
+        local_path = Path(r"C:\Users\sdasd\OneDrive\桌面\stock")
+        local_path.mkdir(parents=True, exist_ok=True)
+        
+        # 將日期格式從 2026-02-05 轉換為 2026-2-5
+        date_parts = latest_date.split('-')
+        year = date_parts[0]
+        month = str(int(date_parts[1]))  # 移除前導零
+        day = str(int(date_parts[2]))    # 移除前導零
+        local_filename = f"{year}-{month}-{day}.csv"
+        
+        local_file = local_path / local_filename
+        df_result.to_csv(local_file, index=False, encoding='utf-8-sig')
+        print(f"✓ 本地儲存: {local_file}")
+    except Exception as e:
+        print(f"⚠️  本地儲存失敗（但分析已完成）: {e}")
     
     print(f"✅ 分析完成！篩選出 {len(df_result)} 檔潛力股")
     print(f"結果已儲存: {output_file}")
