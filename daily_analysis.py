@@ -256,17 +256,24 @@ def analyze_data():
             action = '做多'
             target_price = close + 2 * atr
             stop_loss = close - atr
+            # 建議購買價：收盤價下方 0.5-1 個 ATR (取平均 0.75 ATR)
+            suggested_buy = close - 0.75 * atr
         elif change_pct < -1 and foreign < 0:
             action = '做空'
             target_price = close - 2 * atr
             stop_loss = close + atr
+            # 建議購買價（放空）：收盤價上方 0.5-1 個 ATR
+            suggested_buy = close + 0.75 * atr
         else:
             action = '觀望'
             target_price = close + 2 * atr
             stop_loss = close - atr
+            # 觀望時建議價格為當前收盤價
+            suggested_buy = close
         
         target_pct = ((target_price - close) / close) * 100
         stop_pct = ((stop_loss - close) / close) * 100
+        suggested_buy_pct = ((suggested_buy - close) / close) * 100
         
         if stop_pct != 0:
             risk_reward = f"1:{abs(target_pct / stop_pct):.2f}"
@@ -277,6 +284,8 @@ def analyze_data():
             'stock_id': row[col_code],
             'name': row[col_name],
             'close': close,
+            'suggested_buy': suggested_buy,
+            'suggested_buy_pct': suggested_buy_pct,
             'volume': row['volume_shares'],
             'change_pct': change_pct,
             'amplitude': row['amplitude'],
@@ -363,6 +372,7 @@ def generate_report(analysis_date):
         report_lines.extend([
             f"{i+1}. {row['stock_id']} {row['name']} - {action_emoji} {row['action']}",
             f"   收盤: ${row['close']:.2f}  評分: {row['score']:.1f}分",
+            f"   建議買進: ${row['suggested_buy']:.2f} ({row['suggested_buy_pct']:+.2f}%)",
             f"   目標價: ${row['target_price']:.2f} ({row['target_pct']:+.2f}%)",
             f"   停損價: ${row['stop_loss']:.2f} ({row['stop_pct']:+.2f}%)",
             f"   報酬比: {row['risk_reward']}",
