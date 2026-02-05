@@ -2,19 +2,24 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Data files
+data/
+analysis/
+*.csv
+*.txt
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# Logs
-logs/*.log
-!logs/.gitkeep
-
-# Data (歷史資料太大，只保留最近)
-data/daily/*.parquet
-!data/daily/.gitkeep
-
-# Results
-results/*.json
-!results/.gitkeep
+# OS
+.DS_Store
+Thumbs.db
